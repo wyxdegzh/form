@@ -652,6 +652,38 @@
             showNotification('表单数据已保存！');
         }
         
+        // 处理克隆后的单选按钮，只显示选中的选项
+        function processRadioButtons(clonedElement) {
+            // 获取所有单选按钮组的名称
+            const radioNames = new Set();
+            clonedElement.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radioNames.add(radio.name);
+            });
+            
+            // 遍历每个单选按钮组
+            radioNames.forEach(name => {
+                const radios = clonedElement.querySelectorAll(`input[name="${name}"]`);
+                let selectedRadio = null;
+                
+                // 找到选中的单选按钮
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        selectedRadio = radio;
+                    }
+                });
+                
+                // 隐藏未选中的单选按钮及其标签
+                radios.forEach(radio => {
+                    if (radio !== selectedRadio) {
+                        const label = radio.closest('label');
+                        if (label) {
+                            label.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        }
+        
         // 生成PDF - 只截取表单内容，不包括按钮
         function generatePDF() {
             // 如果是微信浏览器，显示提示
@@ -672,6 +704,18 @@
                 if (buttonGroup) {
                     buttonGroup.remove();
                 }
+                
+                // 处理单选按钮，只显示选中的选项
+                processRadioButtons(formContent);
+                
+                // 确保条件字段的显示状态正确
+                const originalRpmOther = document.getElementById('rpmOtherField').style.display;
+                const originalPackagingCustomer = document.getElementById('packagingCustomerField').style.display;
+                const originalStickerCustomer = document.getElementById('stickerCustomerField').style.display;
+                
+                formContent.querySelector('#rpmOtherField').style.display = originalRpmOther;
+                formContent.querySelector('#packagingCustomerField').style.display = originalPackagingCustomer;
+                formContent.querySelector('#stickerCustomerField').style.display = originalStickerCustomer;
                 
                 // 将副本添加到隐藏的PDF容器中
                 const pdfContainer = document.getElementById('pdfContainer');
