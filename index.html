@@ -371,6 +371,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        
+        /* 产品型号选择框样式 */
+        .product-model-field {
+            margin-top: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -391,9 +397,86 @@
                             <i class="fas fa-cog"></i> 基本参数
                         </div>
                         
+                        <!-- 新增产品类型 -->
                         <div class="form-group">
-                            <label for="model">型号</label>
-                            <input type="text" id="model" name="model" required placeholder="请输入产品型号">
+                            <label>产品类型</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="productType" value="柴油机" required> 柴油机</label>
+                                <label><input type="radio" name="productType" value="发电机"> 发电机</label>
+                                <label><input type="radio" name="productType" value="铸铁泵"> 铸铁泵</label>
+                            </div>
+                            
+                            <!-- 柴油机型号选择框 -->
+                            <div id="dieselModelField" class="product-model-field">
+                                <label for="dieselModel">柴油机型号</label>
+                                <select id="dieselModel" name="dieselModel">
+                                    <option value="">请选择型号</option>
+                                    <option value="YM170F">YM170F</option>
+                                    <option value="YM173F">YM173F</option>
+                                    <option value="YM178F">YM178F</option>
+                                    <option value="YM186F">YM186F</option>
+                                    <option value="YM186FA">YM186FA</option>
+                                    <option value="YM188F">YM188F</option>
+                                    <option value="YM190F">YM190F</option>
+                                    <option value="YM192F">YM192F</option>
+                                    <option value="YM195F">YM195F</option>
+                                    <option value="YM1100FE">YM1100FE</option>
+                                    <option value="YM1105FE">YM1105FE</option>
+                                    <option value="YM1115FE">YM1115FE</option>
+                                    <option value="YM2V80">YM2V80</option>
+                                    <option value="YM2V88">YM2V88</option>
+                                    <option value="YM292">YM292</option>
+                                    <option value="YM2V92">YM2V92</option>
+                                    <option value="YM2V95">YM2V95</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 发电机型号选择框 -->
+                            <div id="generatorModelField" class="product-model-field">
+                                <label for="generatorModel">发电机型号</label>
+                                <select id="generatorModel" name="generatorModel">
+                                    <option value="">请选择型号</option>
+                                    <option value="YM2700E">YM2700E</option>
+                                    <option value="YM3700E">YM3700E</option>
+                                    <option value="YM6700E">YM6700E</option>
+                                    <option value="YM7700E">YM7700E</option>
+                                    <option value="YM8700E">YM8700E</option>
+                                    <option value="YM9700E">YM9700E</option>
+                                    <option value="YM11000E">YM11000E</option>
+                                    <option value="YM13800E">YM13800E</option>
+                                    <option value="YM16800E">YM16800E</option>
+                                    <option value="YM12000E">YM12000E</option>
+                                    <option value="YM13000E">YM13000E</option>
+                                    <option value="YM16000E">YM16000E</option>
+                                    <option value="YM17000E">YM17000E</option>
+                                    <option value="YM18000E">YM18000E</option>
+                                    <option value="YM3700T">YM3700T</option>
+                                    <option value="YM6700T">YM6700T</option>
+                                    <option value="YM7700T">YM7700T</option>
+                                    <option value="YM8700T">YM8700T</option>
+                                    <option value="YM9700T">YM9700T</option>
+                                    <option value="YM11000T">YM11000T</option>
+                                    <option value="YM12000T">YM12000T</option>
+                                    <option value="YM13000T">YM13000T</option>
+                                    <option value="YM13800T">YM13800T</option>
+                                    <option value="YM16000T">YM16000T</option>
+                                    <option value="YM16800T">YM16800T</option>
+                                    <option value="YM17000T">YM17000T</option>
+                                    <option value="YM18000T">YM18000T</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 铸铁泵型号选择框 -->
+                            <div id="pumpModelField" class="product-model-field">
+                                <label for="pumpModel">铸铁泵型号</label>
+                                <select id="pumpModel" name="pumpModel">
+                                    <option value="">请选择型号</option>
+                                    <option value="YMDP15I">YMDP15I</option>
+                                    <option value="YMDP20I">YMDP20I</option>
+                                    <option value="YMDP30I">YMDP30I</option>
+                                    <option value="YMDP40I">YMDP40I</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -595,8 +678,38 @@
             document.getElementById('pdfLoading').style.display = show ? 'flex' : 'none';
         }
         
+        // 显示/隐藏产品型号选择框
+        function toggleProductModelField(productType) {
+            // 先隐藏所有型号选择框
+            document.getElementById('dieselModelField').style.display = 'none';
+            document.getElementById('generatorModelField').style.display = 'none';
+            document.getElementById('pumpModelField').style.display = 'none';
+            
+            // 根据产品类型显示对应的型号选择框
+            if (productType === '柴油机') {
+                document.getElementById('dieselModelField').style.display = 'block';
+            } else if (productType === '发电机') {
+                document.getElementById('generatorModelField').style.display = 'block';
+            } else if (productType === '铸铁泵') {
+                document.getElementById('pumpModelField').style.display = 'block';
+            }
+        }
+        
         // 条件字段显示逻辑
         document.addEventListener('DOMContentLoaded', function() {
+            // 产品类型切换逻辑
+            document.querySelectorAll('input[name="productType"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    toggleProductModelField(this.value);
+                });
+                
+                // 默认选中第一个选项（柴油机）并显示对应型号框
+                if (radio.checked || radio.value === '柴油机') {
+                    radio.checked = true;
+                    toggleProductModelField('柴油机');
+                }
+            });
+            
             // 转速其它选项
             document.querySelectorAll('input[name="rpm"]').forEach(radio => {
                 radio.addEventListener('change', function() {
@@ -642,6 +755,18 @@
         function saveForm() {
             const formData = new FormData(document.getElementById('productionForm'));
             const data = Object.fromEntries(formData.entries());
+            
+            // 获取产品类型和对应型号
+            const productType = data.productType;
+            let productModel = '';
+            if (productType === '柴油机') {
+                productModel = data.dieselModel;
+            } else if (productType === '发电机') {
+                productModel = data.generatorModel;
+            } else if (productType === '铸铁泵') {
+                productModel = data.pumpModel;
+            }
+            data.productModel = productModel;
             
             // 处理条件字段
             data.rpm = data.rpm === 'other' ? data.rpmOtherValue : data.rpm;
@@ -694,6 +819,38 @@
                 // 替换单选组为选中的文本（保持样式一致）
                 radioGroup.innerHTML = `<span style="font-size:14px; color:#334e68; line-height:1.6;">${selectedText}</span>`;
             });
+            
+            // 处理产品类型和型号显示
+            const productTypeRadios = clonedElement.querySelectorAll('input[name="productType"]');
+            let selectedProductType = '';
+            productTypeRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedProductType = radio.nextSibling.textContent.trim();
+                }
+            });
+            
+            // 获取对应的型号值
+            let productModel = '';
+            if (selectedProductType === '柴油机') {
+                const dieselModel = clonedElement.getElementById('dieselModel');
+                productModel = dieselModel ? dieselModel.value : '';
+            } else if (selectedProductType === '发电机') {
+                const generatorModel = clonedElement.getElementById('generatorModel');
+                productModel = generatorModel ? generatorModel.value : '';
+            } else if (selectedProductType === '铸铁泵') {
+                const pumpModel = clonedElement.getElementById('pumpModel');
+                productModel = pumpModel ? pumpModel.value : '';
+            }
+            
+            // 替换产品类型区域的内容
+            const productTypeGroup = clonedElement.querySelector('input[name="productType"]').closest('.form-group');
+            productTypeGroup.innerHTML = `
+                <label style="font-weight:500; color:#334e68; font-size:15px; margin-bottom:6px;">产品类型</label>
+                <span style="font-size:14px; color:#334e68; line-height:1.6;">${selectedProductType}</span>
+                <br>
+                <label style="font-weight:500; color:#334e68; font-size:15px; margin-bottom:6px; margin-top:8px;">产品型号</label>
+                <span style="font-size:14px; color:#334e68; line-height:1.6;">${productModel || '未选择'}</span>
+            `;
             
             // 隐藏所有条件字段容器（因为值已整合到文本中）
             const conditionalFields = clonedElement.querySelectorAll('.conditional-field');
@@ -785,4 +942,3 @@
     </script>
 </body>
 </html>
-
